@@ -1,6 +1,8 @@
 **Laser Gears** generates simple circular involute gears in 2d to be cut by a
 laser printer. It aims to be fast, simple, and stand alone. 
 
+[Live Demo](http://cuadue.github.com/laser_gears/)
+
 It depends on [Raphael.js](http://raphaeljs.com) to generate the SVG, which
 can conveniently be displayed in a browser. Ideally this means we can
 extract an SVG document from the very image displayed in the browser, but that
