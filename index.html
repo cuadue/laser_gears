@@ -54,16 +54,16 @@
             $(function() {
                 $('#holder').laser_gears({
                     width: 600,
-                    height: 400
+                    height: 600
                 })
 
                 var update = $.each({
-                    root_r: [90, 'Root Radius'],
-                    clearance_r: [95, 'Clearance Radius'],
-                    pitch_r: [100, 'Pitch Radius'],
-                    addendum_r: [120, 'Addendum Radius'],
-                    num_teeth: [20, 'Tooth Count'],
-                    gutter_angle: [8, 'Gutter Angle']
+                    root_r: [260, 'Root Radius'],
+                    //clearance_r: [250, 'Clearance Radius'],
+                    pitch_r: [270, 'Pitch Radius'],
+                    addendum_r: [300, 'Addendum Radius'],
+                    num_teeth: [40, 'Tooth Count'],
+                    gutter_angle: [4, 'Gutter Angle']
                 }, function(key, val) {
                     $('#params').append($('<div class=control-group/>').
                         append($('<label class=control-label/>').attr('for', key).text(val[1])).
@@ -81,7 +81,7 @@
                         result[key] = parseFloat($('[name=' + key + ']').val())
                     })
                     $('#holder').laser_gears('draw', result)
-                })
+                }).trigger('submit')
             })
         </script>
     </body>

@@ -101,7 +101,8 @@
     function draw_gear(R, opts) {
         opts = $.extend({
             root_r: 90,
-            clearance_r: 95,
+            // Not yet implemented
+            //clearance_r: 95,
             pitch_r: 100,
             addendum_r: 120,
             num_teeth: 20,
@@ -152,10 +153,9 @@
     
     var methods = {
         init: function(obj) {
-            // Unfortunately width and height need to be passed
             var width = obj.width, height = obj.height
 
-            r = Raphael(this[0], width, height)
+            r = Raphael(this.attr('id'), width, height)
             r.setViewBox(-width / 2, -height / 2, width, height)
             $(this).data(r)
             return this
