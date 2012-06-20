@@ -22,3 +22,5 @@ based upon very limited experience, these things were difficult:
 * [Involute Gear Basic](http://www.scribd.com/doc/17561287/Involute-Gear-Basic)
 * [Design of Nonstandard Gears](http://www.scribd.com/doc/79335761/Design-of-Nonstandard-Gears)
 
+[MIT Licensed](http://www.opensource.org/licenses/mit-license.php)
+
