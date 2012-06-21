@@ -22,17 +22,23 @@
                 <div class=span-9>
                     <h1>Laser Gears <small>generates involute gear patterns for CNC cutting</small></h1>
                     <hr>
-                    <div id=holder></div>
+                    <div id=workspace></div>
                 </div>
                 <div class=span-3>
-                    <h3 id=scale_label></h3>
                     <form id=settings-form class='well form-horizontal'>
                         <fieldset id=params>
                         </fieldset>
                         <hr>
-                        <button href=# class="btn btn-primary" id=draw>
+                        <button class="btn btn-primary">
                             Draw an Involute Gear
                         </button>
+                    </form>
+                    <form id=export-form class='well form-horizontal'>
+                        <p>This only seems to work in Firefox</p>
+                        <button class="btn btn-primary">
+                            Export
+                        </button>
+                        <a href-lang='image/svg+xml' id=export-status></a>
                     </form>
                 </div>
             </div>
@@ -52,8 +58,38 @@
         <script src='raphael.js'></script>
         <script src='gear.js'></script>
         <script>
+
+function publish(data, filename) {
+    window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder
+
+    
+    fs.root.getFile(filename, {
+        create: true
+    }, function (fileEntry) {
+
+        // Create a FileWriter object for our FileEntry (log.txt).
+        fileEntry.createWriter(function (fileWriter) {
+
+            fileWriter.onwriteend = function (e) {
+                console.log('Write completed.');
+            };
+
+            fileWriter.onerror = function (e) {
+                console.log('Write failed: ' + e.toString());
+            };
+
+            var builder = new BlobBuilder();
+            builder.append(data);
+            var blob = builder.getBlob();
+            fileWriter.write(blob);
+
+        }, errorHandler);
+
+    }, errorHandler);
+}
+
             $(function() {
-                $('#holder').laser_gears({
+                $('#workspace').laser_gears({
                     width: 600,
                     height: 600
                 })
@@ -64,6 +100,7 @@
                     pitch_r: [270, 'Pitch Radius'],
                     addendum_r: [300, 'Addendum Radius'],
                     num_teeth: [40, 'Tooth Count'],
+                    involute_step: [1e-2, 'Involute Step Size'],
                     gutter_angle: [4, 'Gutter Angle']
                 }, function(key, val) {
                     $('#params').append($('<div class=control-group/>').
@@ -81,8 +118,16 @@
                     $.each(update, function(key, val) {
                         result[key] = parseFloat($('[name=' + key + ']').val())
                     })
-                    $('#holder').laser_gears('draw', result)
+                    $('#workspace').laser_gears('draw', result)
                 }).trigger('submit')
+
+                $('#export-form').on('submit', function(e) {
+                    e.preventDefault()
+                    str = $('#workspace').laser_gears('serialize')
+
+                    $('#export-status').attr('href','data:image/svg+xml;charset=UTF-8;base64,\n' +
+                        encodeURIComponent(btoa(str))).text('Right-click, save-as')
+                })
             })
         </script>
     </body>

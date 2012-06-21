@@ -106,11 +106,13 @@
             pitch_r: 100,
             addendum_r: 120,
             num_teeth: 20,
-            gutter_angle: 8
+            gutter_angle: 8,
+            involute_step: 1e-3
         }, opts)
 
         // Compute the involute once. We'll use this in several places
-        var inv = involute_curve(opts.pitch_r, opts.addendum_r, 1e-3)
+        var inv = involute_curve(opts.pitch_r, opts.addendum_r,
+                                 opts.involute_step)
         var intersect_angle = involute_intersect_angle(opts.pitch_r, inv)
 
         // Guide hole for your drill of choice
@@ -161,10 +163,22 @@
             return this
         },
         draw: function(opts) {
-            console.log(opts)
             r = $(this).data()
             r.clear()
             draw_gear(r, opts)
+        },
+        serialize: function() {
+            var elem = $(this).children('svg')
+            elem.find('desc').text(
+                'Laser Gears (Wes Waugh) with the help of Raphael')
+            console.log(elem)
+            var str = (new XMLSerializer()).serializeToString(elem[0])
+            // OK so Raphael adds some stuff to the DOM that looks like this:
+            // <desc>Created with Raphaël 2.1.0</desc><defs/>
+            // And that breaks the svg output because it has that ë!
+            // So lets just kill it and see if that fixes it.
+            var xml_header = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
+            return xml_header + str
         }
     }
 
